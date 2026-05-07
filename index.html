@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PR-MED — Жизненные показатели вашего роста</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Cormorant+Garamond:ital,wght@1,300;1,400&family=Bebas+Neue&family=Manrope:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#040608;--bg2:#080C14;--bg3:#0F1420;
+  --p:#00DDB4;--pg:rgba(0,221,180,.12);
+  --gold:#C8924A;
+  --w:#F0ECE4;--gray:#7A8090;--mu:#3E4452;
+  --b2:rgba(240,236,228,.06);
+  --fh:'Syne',sans-serif;--fd:'Cormorant Garamond',serif;
+  --fn:'Bebas Neue',sans-serif;--fb:'Manrope',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--gray);font-family:var(--fb);font-weight:300;line-height:1.7;overflow-x:hidden;cursor:none}
+h1,h2,h3,h4{font-family:var(--fh);font-weight:800;color:var(--w);line-height:1.0}
+
+/* ── CURSOR ─────────────────────── */
+#cd{position:fixed;width:6px;height:6px;background:var(--p);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:screen}
+#cr{position:fixed;width:34px;height:34px;border:1px solid rgba(0,221,180,.45);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .25s,height .25s,border-color .25s}
+.cursor-big #cr{width:56px;height:56px;border-color:rgba(200,146,74,.5)}
+.cursor-big #cd{background:var(--gold)}
+
+/* ── NAV ────────────────────────── */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:26px 60px;display:flex;align-items:center;justify-content:space-between;transition:all .4s}
+nav.on{background:rgba(4,6,8,.93);backdrop-filter:blur(24px);padding:16px 60px;border-bottom:1px solid rgba(0,221,180,.1)}
+.logo{font-family:var(--fh);font-size:22px;font-weight:800;color:var(--w);text-decoration:none;display:flex;align-items:center;gap:6px}
+.logo-sep{width:22px;height:2px;background:var(--p);position:relative;overflow:hidden}
+.logo-sep::after{content:'';position:absolute;inset:0;background:var(--w);transform:translateX(-100%);animation:logoscan 2.2s ease-in-out infinite}
+@keyframes logoscan{0%{transform:translateX(-100%)}100%{transform:translateX(200%)}}
+.logo span{color:var(--p)}
+.navl{display:flex;gap:34px;list-style:none}
+.navl a{color:var(--gray);text-decoration:none;font-size:12px;font-weight:400;letter-spacing:.08em;transition:color .3s;text-transform:uppercase}
+.navl a:hover{color:var(--w)}
+.nav-btn{border:1px solid var(--p);color:var(--p);padding:10px 24px;font-family:var(--fb);font-size:11px;font-weight:500;letter-spacing:.15em;cursor:pointer;transition:all .3s;text-transform:uppercase;text-decoration:none;display:inline-block;background:transparent}
+.nav-btn:hover{background:var(--p);color:var(--bg)}
+
+/* ── HERO ────────────────────────── */
+.hero{min-height:100vh;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;padding:140px 60px 80px}
+#ecg{position:absolute;inset:0;pointer-events:none;z-index:0}
+.hero-status{position:absolute;top:100px;right:60px;display:flex;align-items:center;gap:10px;z-index:2;opacity:0;animation:fadeIn 1s .8s forwards}
+.hero-status-dot{width:7px;height:7px;background:var(--p);border-radius:50%;animation:blink 1.3s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.hero-status-text{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--p)}
+.hero-flash{position:absolute;bottom:80px;right:60px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--p);opacity:0;transition:opacity .3s;z-index:2}
+.hc{position:relative;z-index:1;max-width:1100px}
+.hero-chip{display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(0,221,180,.2);padding:7px 14px;margin-bottom:44px;font-size:11px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--p)}
+.hero-chip i{width:6px;height:6px;background:var(--p);border-radius:50%;display:block;animation:blink 1.3s infinite}
+.h1{font-size:clamp(54px,9vw,134px);font-weight:800;line-height:.92;margin-bottom:0}
+.h1 .line{display:block;overflow:hidden}
+.h1 .word{display:inline-block;transform:translateY(110%);animation:sup .95s cubic-bezier(.16,1,.3,1) forwards}
+.h1 .l1 .word{animation-delay:.25s}
+.h1 .l2 .word{animation-delay:.45s}
+.h1 .l3 .word{animation-delay:.65s;color:var(--p)}
+@keyframes sup{to{transform:translateY(0)}}
+.hero-div{height:1px;background:linear-gradient(90deg,transparent,var(--p),transparent);margin:24px 0;transform:scaleX(0);animation:xpand .6s ease .85s forwards;transform-origin:left}
+@keyframes xpand{to{transform:scaleX(1)}}
+@keyframes fadeIn{to{opacity:1}}
+.hero-sub{font-size:16px;color:var(--gray);max-width:520px;line-height:1.85;opacity:0;animation:fadeIn .8s .95s forwards}
+.hero-actions{display:flex;gap:20px;align-items:center;margin-top:38px;opacity:0;animation:fadeIn .8s 1.1s forwards}
+.btn-p{background:var(--p);color:var(--bg);padding:15px 42px;font-family:var(--fb);font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;border:none;cursor:pointer;transition:background .3s,transform .2s;text-decoration:none;display:inline-block;position:relative;overflow:hidden}
+.btn-p::after{content:'';position:absolute;inset:0;background:rgba(255,255,255,.15);transform:translateX(-100%);transition:transform .4s}
+.btn-p:hover::after{transform:translateX(0)}
+.btn-p:hover{transform:translateY(-2px)}
+.btn-g{color:var(--gray);font-size:13px;text-decoration:none;display:inline-flex;align-items:center;gap:9px;transition:color .3s}
+.btn-g::after{content:'↗';transition:transform .3s}
+.btn-g:hover{color:var(--w)}
+.btn-g:hover::after{transform:translate(3px,-3px)}
+.hero-stats{display:flex;gap:0;border-top:1px solid var(--b2);margin-top:56px;opacity:0;animation:fadeIn .8s 1.3s forwards}
+.stat{flex:1;padding:28px 0;position:relative}
+.stat::after{content:'';position:absolute;right:0;top:20%;height:60%;width:1px;background:var(--b2)}
+.stat:last-child::after{display:none}
+.sv{font-family:var(--fn);font-size:52px;color:var(--w);line-height:1;margin-bottom:4px;letter-spacing:.02em;display:flex;align-items:baseline;gap:2px}
+.sn{font-family:var(--fn);color:inherit}
+.ss{font-family:var(--fh);font-size:.52em;font-weight:800;color:var(--p);letter-spacing:.01em;line-height:1}
+.sl{font-size:10px;color:var(--mu);letter-spacing:.12em;text-transform:uppercase}
+.hero-hint{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--mu);display:flex;align-items:center;gap:8px;opacity:0;animation:fadeIn 1s 1.8s forwards}
+.hero-hint::before{content:'';width:1px;height:24px;background:var(--mu);animation:scaleY 1.5s ease-in-out infinite}
+@keyframes scaleY{0%,100%{transform:scaleY(1)}50%{transform:scaleY(.3)}}
+
+/* ── TICKER ─────────────────────── */
+.ticker{background:var(--p);padding:13px 0;overflow:hidden;white-space:nowrap;position:relative;z-index:2}
+.ticker-t{display:inline-flex;animation:tick 30s linear infinite}
+.ticker-i{font-family:var(--fb);font-size:10px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--bg);padding:0 28px}
+.ticker-i::after{content:'✦';margin-left:28px}
+@keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ── SHARED ─────────────────────── */
+.sec{padding:112px 60px}
+.sec-alt{background:var(--bg2)}
+.chip{display:inline-flex;align-items:center;gap:10px;font-size:10px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--p);margin-bottom:22px}
+.chip::before{content:'';width:24px;height:1px;background:var(--p)}
+.sh{font-size:clamp(38px,4.5vw,70px);margin-bottom:72px;line-height:.96;position:relative}
+.sh-scan{position:absolute;left:-4px;right:-4px;height:2px;background:var(--p);box-shadow:0 0 12px var(--p);opacity:0;top:0;pointer-events:none}
+.sh-scan.go{animation:scandown .55s cubic-bezier(.4,0,.2,1) forwards}
+@keyframes scandown{0%{top:0;opacity:.9}90%{top:100%;opacity:.9}100%{top:100%;opacity:0}}
+
+/* ── SERVICES ───────────────────── */
+.slist{display:flex;flex-direction:column;border-top:1px solid var(--b2)}
+.si{border-bottom:1px solid var(--b2);overflow:hidden}
+.si-head{display:grid;grid-template-columns:72px 1fr 38px;align-items:center;padding:26px 0;cursor:pointer;gap:20px}
+.si-n{font-family:var(--fn);font-size:26px;color:var(--mu);letter-spacing:.04em;transition:color .3s}
+.si-name{font-family:var(--fh);font-size:clamp(18px,2.4vw,28px);font-weight:700;color:var(--w);transition:color .3s}
+.si-head:hover .si-name{color:var(--p)}
+.si.open .si-n{color:var(--p)}
+.si-arr{width:34px;height:34px;border:1px solid var(--b2);display:flex;align-items:center;justify-content:center;color:var(--gray);transition:all .4s;flex-shrink:0;font-size:16px}
+.si.open .si-arr{background:var(--p);border-color:var(--p);color:var(--bg);transform:rotate(45deg)}
+.si-body{height:0;overflow:hidden;transition:height .48s cubic-bezier(.4,0,.2,1)}
+.si-in{padding:0 0 36px 92px;max-width:660px}
+.si-in p{font-size:14px;color:var(--gray);line-height:1.9;margin-bottom:18px}
+.tags{display:flex;flex-wrap:wrap;gap:7px}
+.tag{border:1px solid rgba(0,221,180,.15);padding:4px 12px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--p)}
+
+/* ── MANIFESTO ──────────────────── */
+.mani{padding:0;position:relative;overflow:hidden;background:var(--bg)}
+.mani-top{padding:100px 60px 80px;position:relative;text-align:center;border-top:1px solid var(--b2)}
+.mani-top::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:1px;height:100px;background:linear-gradient(180deg,var(--p),transparent)}
+.mani-top::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(0,221,180,.06) 0%,transparent 65%);pointer-events:none}
+.mani-label{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--p);margin-bottom:36px;display:flex;align-items:center;justify-content:center;gap:12px;position:relative;z-index:1}
+.mani-label::before,.mani-label::after{content:'';flex:1;max-width:80px;height:1px;background:linear-gradient(90deg,transparent,var(--p))}
+.mani-label::after{background:linear-gradient(90deg,var(--p),transparent)}
+.mq{font-family:var(--fd);font-size:clamp(24px,3.4vw,50px);font-style:italic;color:var(--w);line-height:1.45;max-width:900px;margin:0 auto;font-weight:300;position:relative;z-index:1}
+.mq em{color:var(--p);font-style:italic}
+.mani-sig{margin-top:48px;position:relative;z-index:1;display:flex;align-items:center;justify-content:center;gap:16px}
+.mani-sig-line{width:40px;height:1px;background:var(--b2)}
+.mani-sig-text{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--mu)}
+.mani-values{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--b2)}
+.mv{padding:52px 44px;border-right:1px solid var(--b2);position:relative;overflow:hidden;transition:background .35s}
+.mv:last-child{border-right:none}
+.mv:hover{background:rgba(0,221,180,.025)}
+.mv::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--p);transform:scaleX(0);transform-origin:left;transition:transform .5s cubic-bezier(.16,1,.3,1)}
+.mv:hover::after{transform:scaleX(1)}
+.mv-num{font-family:var(--fn);font-size:clamp(48px,4vw,72px);color:var(--p);line-height:1;margin-bottom:4px;letter-spacing:.02em;display:flex;align-items:baseline;gap:2px}
+.mv-num .sn{font-family:var(--fn)}
+.mv-num .ss{font-family:var(--fh);font-size:.44em;font-weight:800}
+.mv-label{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--mu);margin-bottom:10px}
+.mv-desc{font-size:13px;color:var(--gray);line-height:1.7}
+@media(max-width:1100px){.mani-values{grid-template-columns:repeat(2,1fr)}.mv{border-bottom:1px solid var(--b2)}}
+@media(max-width:800px){.mani-top{padding:72px 20px 60px}.mani-values{grid-template-columns:1fr 1fr}.mv{padding:36px 24px}}
+
+/* ── CASES ──────────────────────── */
+.cg{display:grid;grid-template-columns:2fr 1fr 1fr;gap:1px;background:var(--b2)}
+.cc{background:var(--bg2);padding:56px 44px;position:relative;overflow:hidden;transition:background .4s}
+.cc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--p);transform:scaleX(0);transform-origin:left;transition:transform .5s cubic-bezier(.16,1,.3,1)}
+.cc:hover{background:var(--bg3)}
+.cc:hover::before{transform:scaleX(1)}
+.ctag{display:inline-block;border:1px solid var(--b2);padding:4px 11px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--mu);margin-bottom:28px}
+.cnum{font-family:var(--fn);font-size:clamp(70px,7.5vw,110px);color:var(--p);line-height:.9;letter-spacing:.02em;margin-bottom:4px}
+.cmet{font-size:10px;color:var(--mu);letter-spacing:.16em;text-transform:uppercase;margin-bottom:18px}
+.ccli{font-family:var(--fh);font-size:19px;font-weight:700;color:var(--w);margin-bottom:10px}
+.cdesc{font-size:13px;color:var(--gray);line-height:1.85}
+
+/* ── BENTO ──────────────────────── */
+.bento{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.bc{background:var(--bg2);border:1px solid var(--b2);padding:44px;position:relative;overflow:hidden;transition:border-color .35s}
+.bc:hover{border-color:rgba(0,221,180,.22)}
+.bc-q{grid-column:span 2;grid-row:span 2;background:var(--bg3);display:flex;flex-direction:column;justify-content:space-between}
+.bc-m{display:flex;flex-direction:column;justify-content:space-between}
+.bc-w{grid-column:span 3}
+.bqm{font-family:var(--fd);font-size:90px;color:var(--p);opacity:.14;line-height:.6;margin-bottom:10px}
+.bqt{font-family:var(--fd);font-size:clamp(20px,2.3vw,32px);font-style:italic;color:var(--w);font-weight:300;line-height:1.45;flex:1}
+.bqs{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--mu);margin-top:28px}
+.bmet{font-family:var(--fn);font-size:clamp(50px,4.5vw,76px);color:var(--p);letter-spacing:.02em;line-height:1}
+.bml{font-size:11px;color:var(--mu);letter-spacing:.1em;text-transform:uppercase;margin-top:7px}
+.bfi{width:40px;height:40px;border:1px solid rgba(0,221,180,.15);display:flex;align-items:center;justify-content:center;color:var(--p);margin-bottom:20px}
+.bft{font-family:var(--fh);font-size:18px;font-weight:700;color:var(--w);margin-bottom:8px}
+.bfd{font-size:13px;color:var(--gray);line-height:1.8}
+.bpulse{position:absolute;bottom:-24px;right:-24px;width:110px;height:110px;border:1px solid var(--b2);border-radius:50%;opacity:.25}
+.bpulse::before{content:'';position:absolute;inset:14px;border:1px solid var(--b2);border-radius:50%}
+
+/* ── PROCESS ────────────────────── */
+.plist{display:flex;flex-direction:column;position:relative}
+.plist::before{content:'';position:absolute;left:26px;top:26px;bottom:26px;width:1px;background:linear-gradient(180deg,var(--p),rgba(0,221,180,.08))}
+.ps{display:grid;grid-template-columns:52px 1fr;gap:36px;padding:40px 0;border-bottom:1px solid var(--b2);align-items:start}
+.ps:last-child{border-bottom:none}
+.pdot{width:52px;height:52px;border:1px solid var(--p);display:flex;align-items:center;justify-content:center;font-family:var(--fn);font-size:20px;color:var(--p);flex-shrink:0;background:var(--bg);position:relative;z-index:1;transition:all .35s}
+.ps:hover .pdot{background:var(--p);color:var(--bg)}
+.ph{font-family:var(--fh);font-size:22px;font-weight:700;color:var(--w);margin-bottom:9px}
+.pp{font-size:14px;color:var(--gray);line-height:1.85;max-width:540px}
+.pt{display:inline-block;margin-top:12px;font-size:10px;letter-spacing:.2em;color:var(--p);text-transform:uppercase}
+
+/* ── TESTIMONIALS ───────────────── */
+.tg{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.tc{background:var(--bg2);border:1px solid var(--b2);padding:42px 36px;position:relative;transition:border-color .35s,transform .4s;transform-style:preserve-3d}
+.tc:hover{border-color:rgba(0,221,180,.2)}
+.tc::before{content:'"';font-family:var(--fd);font-size:96px;color:var(--p);opacity:.08;position:absolute;top:4px;left:24px;line-height:1}
+.tct{font-family:var(--fd);font-size:17px;font-weight:300;font-style:italic;color:var(--w);line-height:1.65;margin-bottom:24px;position:relative;z-index:1}
+.ta{display:flex;align-items:center;gap:12px}
+.tav{width:42px;height:42px;border-radius:50%;background:var(--bg3);border:1px solid var(--b2);display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:17px;color:var(--p)}
+.tan{font-size:14px;font-weight:500;color:var(--w)}
+.tar{font-size:11px;color:var(--mu);margin-top:2px}
+
+/* ── TEAM ───────────────────────── */
+.tmg{display:grid;grid-template-columns:repeat(4,1fr);gap:28px}
+.tm{background:var(--bg2);border:1px solid var(--b2);padding:32px 26px;text-align:center;transition:border-color .35s}
+.tm:hover{border-color:rgba(0,221,180,.2)}
+.tmp{width:110px;height:110px;border-radius:50%;margin:0 auto 18px;background:var(--bg3);border:1px solid var(--b2);display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:34px;color:var(--p)}
+.tmn{font-family:var(--fh);font-size:17px;font-weight:700;color:var(--w);margin-bottom:4px}
+.tmr{font-size:10px;color:var(--p);letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px}
+.tmb{font-size:12px;color:var(--mu);line-height:1.75}
+
+/* ── FAQ ────────────────────────── */
+.fql{display:flex;flex-direction:column;border-top:1px solid var(--b2)}
+.fqi{border-bottom:1px solid var(--b2)}
+.fqq{display:flex;justify-content:space-between;align-items:start;gap:16px;padding:26px 0;cursor:pointer}
+.fqt{font-family:var(--fh);font-size:17px;font-weight:700;color:var(--w);transition:color .3s;line-height:1.3}
+.fqq:hover .fqt{color:var(--p)}
+.fqplus{width:30px;height:30px;border:1px solid var(--b2);display:flex;align-items:center;justify-content:center;color:var(--gray);flex-shrink:0;transition:all .4s;font-size:16px}
+.fqi.open .fqplus{background:var(--p);border-color:var(--p);color:var(--bg);transform:rotate(45deg)}
+.fqaw{height:0;overflow:hidden;transition:height .44s cubic-bezier(.4,0,.2,1)}
+.fqa{padding:0 0 26px;font-size:14px;color:var(--gray);line-height:1.85;max-width:680px}
+
+/* ── CTA ────────────────────────── */
+.cta{padding:130px 60px;text-align:center;position:relative;overflow:hidden}
+.cta::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:900px;height:500px;background:radial-gradient(ellipse,rgba(0,221,180,.065) 0%,transparent 70%);pointer-events:none}
+.cta h2{font-size:clamp(42px,6vw,88px);margin-bottom:18px;position:relative;z-index:1}
+.cta p{font-size:16px;color:var(--gray);max-width:420px;margin:0 auto 44px;line-height:1.85;position:relative;z-index:1}
+.cta-btns{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;position:relative;z-index:1}
+
+/* ── CONTACT — channels ─────────── */
+.ch-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:14px;margin-top:56px}
+.ch{background:var(--bg2);border:1px solid var(--b2);padding:44px 38px;text-decoration:none;display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden;transition:transform .4s,border-color .4s}
+.ch:hover{transform:translateY(-6px)}
+.ch-glow{position:absolute;inset:0;opacity:0;transition:opacity .4s}
+.ch:hover .ch-glow{opacity:1}
+.ch-tg{border-color:rgba(42,171,238,.15)}
+.ch-tg:hover{border-color:rgba(42,171,238,.45)}
+.ch-tg .ch-glow{background:radial-gradient(ellipse at 30% 30%,rgba(42,171,238,.07) 0%,transparent 70%)}
+.ch-wa{border-color:rgba(37,211,102,.15)}
+.ch-wa:hover{border-color:rgba(37,211,102,.45)}
+.ch-wa .ch-glow{background:radial-gradient(ellipse at 30% 30%,rgba(37,211,102,.07) 0%,transparent 70%)}
+.ch-vk{border-color:rgba(100,120,220,.15)}
+.ch-vk:hover{border-color:rgba(100,120,220,.45)}
+.ch-vk .ch-glow{background:radial-gradient(ellipse at 30% 30%,rgba(100,120,220,.07) 0%,transparent 70%)}
+.ch-label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;font-weight:500;position:relative;z-index:1}
+.ch-tg .ch-label{color:#2AABEE}
+.ch-wa .ch-label{color:#25D366}
+.ch-vk .ch-label{color:#6478DC}
+.ch-name{font-family:var(--fh);font-size:clamp(22px,2.5vw,34px);font-weight:800;color:var(--w);position:relative;z-index:1}
+.ch-handle{font-size:13px;color:var(--gray);position:relative;z-index:1}
+.ch-desc{font-size:12px;color:var(--mu);line-height:1.6;margin-top:auto;padding-top:16px;border-top:1px solid var(--b2);position:relative;z-index:1}
+.ch-arrow{position:absolute;top:28px;right:28px;color:var(--mu);font-size:18px;transition:all .3s;z-index:1}
+.ch:hover .ch-arrow{color:var(--w);transform:translate(4px,-4px)}
+.ch-email{margin-top:28px;text-align:center;font-size:14px;color:var(--mu)}
+.ch-email a{color:var(--gray);text-decoration:none;transition:color .3s}
+.ch-email a:hover{color:var(--w)}
+
+/* ── CLIENTS ────────────────────── */
+.cls{background:var(--bg2);padding:60px}
+.clr{display:flex;gap:48px;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:28px}
+.cl{font-family:var(--fh);font-size:15px;font-weight:700;color:var(--mu);letter-spacing:.04em;transition:color .3s;opacity:.35;cursor:default}
+.cl:hover{color:var(--gray);opacity:.75}
+
+/* ── FOOTER ─────────────────────── */
+footer{background:var(--bg);padding:68px 60px 32px;border-top:1px solid var(--b2)}
+.ft{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;margin-bottom:52px}
+.flogo{font-family:var(--fh);font-size:22px;font-weight:800;color:var(--w);text-decoration:none;display:block;margin-bottom:14px;letter-spacing:.04em}
+.flogo span{color:var(--p)}
+.fa{font-size:13px;color:var(--gray);line-height:1.8;max-width:230px}
+.fso{display:flex;gap:9px;margin-top:22px}
+.fsb{width:34px;height:34px;border:1px solid rgba(0,221,180,.2);display:flex;align-items:center;justify-content:center;color:var(--gray);font-size:10px;font-weight:500;text-decoration:none;letter-spacing:.04em;transition:all .3s}
+.fsb:hover{border-color:var(--p);color:var(--p)}
+.fc h5{font-family:var(--fb);font-size:10px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--p);margin-bottom:18px}
+.fc ul{list-style:none;display:flex;flex-direction:column;gap:9px}
+.fc ul li a{color:var(--gray);text-decoration:none;font-size:13px;transition:color .3s}
+.fc ul li a:hover{color:var(--w)}
+.fh{margin-top:16px;font-size:12px;color:var(--gray);line-height:1.8}
+.flegals{margin-top:12px;font-size:11px;color:var(--mu);line-height:1.7}
+.fbot{border-top:1px solid var(--b2);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.fcp{font-size:12px;color:var(--gray)}
+.fleg{display:flex;gap:22px;flex-wrap:wrap}
+.fleg a{font-size:12px;color:var(--gray);text-decoration:none;transition:color .3s}
+.fleg a:hover{color:var(--w)}
+
+/* ── ANIMATIONS ─────────────────── */
+.rv{opacity:0;transform:translateY(36px);transition:opacity .75s ease,transform .75s ease}
+.rv.in{opacity:1;transform:none}
+.rvc{clip-path:inset(0 0 100% 0);transition:clip-path .85s cubic-bezier(.16,1,.3,1)}
+.rvc.in{clip-path:inset(0 0 0% 0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+/* ── RESPONSIVE ─────────────────── */
+@media(max-width:1100px){
+  .bento{grid-template-columns:1fr 1fr}
+  .bc-q{grid-column:span 2}.bc-w{grid-column:span 2}
+  .cg{grid-template-columns:1fr 1fr}
+  .ch-grid{grid-template-columns:1fr}
+  .ft{grid-template-columns:1fr 1fr;gap:36px}
+}
+@media(max-width:800px){
+  nav{padding:16px 20px}nav.on{padding:12px 20px}
+  .navl{display:none}
+  .sec,.mani,.cta{padding:68px 20px}
+  footer{padding:52px 20px 28px}
+  .hero{padding:110px 20px 60px}
+  .hero-status{right:20px}
+  .bento{grid-template-columns:1fr}
+  .bc-q,.bc-w{grid-column:span 1}
+  .cg,.tg,.tmg{grid-template-columns:1fr}
+  .plist::before{left:22px}
+  .ps{grid-template-columns:44px 1fr;gap:20px}
+  .si-in{padding-left:0}
+  .hero-stats{flex-wrap:wrap}
+  .stat{min-width:45%}
+  .ft{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div id="cd"></div>
+<div id="cr"></div>
+<canvas id="pcanvas" style="position:fixed;inset:0;pointer-events:none;z-index:3;width:100%;height:100%"></canvas>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#home" class="logo">PR<div class="logo-sep"></div><span>MED</span></a>
+  <ul class="navl">
+    <li><a href="#services">Услуги</a></li>
+    <li><a href="#cases">Кейсы</a></li>
+    <li><a href="#about">О нас</a></li>
+    <li><a href="#team">Команда</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#contact">Контакты</a></li>
+  </ul>
+  <a href="#contact" class="nav-btn">Обсудить проект</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <canvas id="ecg"></canvas>
+  <div class="hero-status">
+    <div class="hero-status-dot"></div>
+    <span class="hero-status-text">ПУЛЬС: НОРМА</span>
+  </div>
+  <div class="hero-flash" id="hero-flash">+ ИМПУЛЬС АКТИВИРОВАН</div>
+  <div class="hc">
+    <div class="hero-chip"><i></i> Жизненные показатели вашего роста</div>
+    <h1 class="h1">
+      <span class="line l1"><span class="word">МЫ ДЕЛАЕМ ТАК,</span></span>
+      <span class="line l2"><span class="word">ЧТОБЫ ПАЦИЕНТЫ</span></span>
+      <span class="line l3"><span class="word">ВЫБИРАЛИ ВАС</span></span>
+    </h1>
+    <div class="hero-div"></div>
+    <p class="hero-sub">PR-MED — агентство медицинского маркетинга полного цикла. Продвигаем клиники, врачей и фармацевтические компании с точностью хирурга.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-p mag">Получить стратегию</a>
+      <a href="#cases" class="btn-g">Смотреть кейсы</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="sv slot" data-v="120"><span class="sn">120</span><span class="ss">+</span></div><div class="sl">Клиентов</div></div>
+      <div class="stat"><div class="sv slot" data-v="10"><span class="sn">10</span></div><div class="sl">Лет опыта</div></div>
+      <div class="stat"><div class="sv slot" data-v="47"><span class="sn">47</span><span class="ss">M</span></div><div class="sl">Охват/мес</div></div>
+      <div class="stat"><div class="sv slot" data-v="3.2" data-f="1"><span class="sn">3.2</span><span class="ss">×</span></div><div class="sl">Средний рост</div></div>
+    </div>
+  </div>
+  <div class="hero-hint">Кликни на экран · Взаимодействуй</div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-t">
+    <span class="ticker-i">Медицинский маркетинг</span><span class="ticker-i">Продвижение клиник</span><span class="ticker-i">Личный бренд врача</span><span class="ticker-i">SEO для медицины</span><span class="ticker-i">Фарм-маркетинг</span><span class="ticker-i">Управление репутацией</span><span class="ticker-i">PR и медиа</span><span class="ticker-i">Performance-реклама</span><span class="ticker-i">Юридический аудит сайта</span><span class="ticker-i">Медицинский редактор</span><span class="ticker-i">Медицинский маркетинг</span><span class="ticker-i">Продвижение клиник</span><span class="ticker-i">Личный бренд врача</span><span class="ticker-i">SEO для медицины</span><span class="ticker-i">Фарм-маркетинг</span><span class="ticker-i">Управление репутацией</span><span class="ticker-i">PR и медиа</span><span class="ticker-i">Performance-реклама</span><span class="ticker-i">Юридический аудит сайта</span><span class="ticker-i">Медицинский редактор</span>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="sec sec-alt" id="services">
+  <div class="rv"><div class="chip">Услуги</div></div>
+  <h2 class="sh rv d1 scramble" data-orig="Полный цикл медицинского маркетинга">Полный цикл медицинского маркетинга<div class="sh-scan"></div></h2>
+  <div class="slist">
+    <div class="si rv"><div class="si-head" onclick="toggleS(this)"><span class="si-n">01</span><span class="si-name">Продвижение клиник</span><span class="si-arr">+</span></div><div class="si-body"><div class="si-in"><p>Комплексное digital-продвижение медицинских центров и сетей любого масштаба. Наполняем запись, снижаем стоимость привлечения пациента и строим долгосрочную лояльность к бренду.</p><p>Многопрофильные клиники, стоматологии, косметологические центры, хирургические учреждения.</p><div class="tags"><span class="tag">SEO</span><span class="tag">Контекст</span><span class="tag">Репутация</span><span class="tag">Контент</span><span class="tag">SMM</span></div></div></div></div>
+    <div class="si rv d1"><div class="si-head" onclick="toggleS(this)"><span class="si-n">02</span><span class="si-name">Личный бренд врача</span><span class="si-arr">+</span></div><div class="si-body"><div class="si-in"><p>Превращаем практикующего врача в признанного публичного эксперта. Стратегия позиционирования, авторские Telegram и YouTube, публикации в ведущих СМИ и ТВ-программах.</p><div class="tags"><span class="tag">Контент</span><span class="tag">PR</span><span class="tag">Telegram</span><span class="tag">YouTube</span><span class="tag">Книги</span></div></div></div></div>
+    <div class="si rv d2"><div class="si-head" onclick="toggleS(this)"><span class="si-n">03</span><span class="si-name">SEO и контент-маркетинг</span><span class="si-arr">+</span></div><div class="si-body"><div class="si-in"><p>Медицинский контент по E-E-A-T-принципам, одобренный практикующими врачами. Статьи и лендинги, которые ранжируются и приводят целевой трафик на годы вперёд.</p><div class="tags"><span class="tag">Семантика</span><span class="tag">Тексты</span><span class="tag">Технический SEO</span><span class="tag">Ссылки</span></div></div></div></div>
+    <div class="si rv d1"><div class="si-head" onclick="toggleS(this)"><span class="si-n">04</span><span class="si-name">Управление репутацией</span><span class="si-arr">+</span></div><div class="si-body"><div class="si-in"><p>Системная работа с Яндекс Картами, ПроДокторов, 2ГИС, Google и Zoon. Мониторинг, нейтрализация негатива, повышение рейтинга 24/7.</p><div class="tags"><span class="tag">ORM</span><span class="tag">Отзывы</span><span class="tag">Мониторинг</span><span class="tag">SERM</span></div></div></div></div>
+    <div class="si rv d2"><div class="si-head" onclick="toggleS(this)"><span class="si-n">05</span><span class="si-name">Performance-реклама</span><span class="si-arr">+</span></div><div class="si-body"><div class="si-in"><p>Яндекс.Директ, VK Ads и Telegram с учётом ограничений медицинского законодательства. Без слитых бюджетов, со сквозной аналитикой.</p><div class="tags"><span class="tag">Яндекс.Директ</span><span class="tag">VK Ads</span><span class="tag">Telegram</span><span class="tag">Аналитика</span></div></div></div></div>
+    <div class="si rv d1"><div class="si-head" onclick="toggleS(this)"><span class="si-n">06</span><span class="si-name">PR и медиаотношения</span><span class="si-arr">+</span></div><div class="si-body"><div class="si-in"><p>Публикации в РБК, Коммерсантъ, Forbes Health, Медвестнике. Пресс-конференции, отраслевые рейтинги, ТВ-редакции и подкасты о здоровье.</p><div class="tags"><span class="tag">СМИ</span><span class="tag">ТВ</span><span class="tag">Пресс-релизы</span><span class="tag">Рейтинги</span></div></div></div></div>
+    <div class="si rv d2"><div class="si-head" onclick="toggleS(this)"><span class="si-n">07</span><span class="si-name">SMM для медицины</span><span class="si-arr">+</span></div><div class="si-body"><div class="si-in"><p>Ведение медицинских соцсетей строго в рамках ФЗ-38. Контент-стратегия, которая строит авторитет и конвертирует подписчиков в пациентов.</p><div class="tags"><span class="tag">ВКонтакте</span><span class="tag">Telegram</span><span class="tag">YouTube</span></div></div></div></div>
+    <div class="si rv d3"><div class="si-head" onclick="toggleS(this)"><span class="si-n">08</span><span class="si-name">Фарм-маркетинг</span><span class="si-arr">+</span></div><div class="si-body"><div class="si-in"><p>Продвижение фармацевтических брендов с соблюдением требований Минздрава и Росздравнадзора. DTC-коммуникации, HCP-маркетинг, конгрессы, KOL-программы.</p><div class="tags"><span class="tag">DTC</span><span class="tag">HCP</span><span class="tag">Конгрессы</span><span class="tag">KOL</span></div></div></div></div>
+    <div class="si rv"><div class="si-head" onclick="toggleS(this)"><span class="si-n">09</span><span class="si-name">Юридический аудит медицинского сайта</span><span class="si-arr">+</span></div><div class="si-body"><div class="si-in"><p>Комплексная проверка сайта медицинской организации на соответствие действующему законодательству. Штатный юрист анализирует каждую страницу и каждый рекламный материал.</p><p>По результатам аудита вы получаете письменное заключение с перечнем нарушений, рисков и конкретным планом их устранения. Работаем превентивно — до проверки Росздравнадзора, а не после.</p><div class="tags"><span class="tag">ФЗ-38</span><span class="tag">ФЗ-323</span><span class="tag">ФЗ-152</span><span class="tag">Росздравнадзор</span><span class="tag">Минздрав</span><span class="tag">Дисклеймеры</span><span class="tag">Лицензии</span></div></div></div></div>
+  </div>
+</section>
+
+<!-- MANIFESTO -->
+<section class="mani">
+  <div class="mani-top">
+    <div class="mani-label rv">Манифест агентства</div>
+    <p class="mq rv d1">«Доверие к врачу не строится за один приём.<br>Доверие к бренду — тоже.<br>Мы создаём присутствие, которое <em>говорит с пациентом</em><br>задолго до записи и остаётся с ним после выписки.»</p>
+    <div class="mani-sig rv d2">
+      <div class="mani-sig-line"></div>
+      <span class="mani-sig-text">PR-MED · с 2016 года</span>
+      <div class="mani-sig-line"></div>
+    </div>
+  </div>
+  <div class="mani-values">
+    <div class="mv rv">
+      <div class="mv-label">Клиентов</div>
+      <div class="mv-num slot" data-v="120"><span class="sn">120</span><span class="ss">+</span></div>
+      <div class="mv-desc">Клиник, врачей и фарм-брендов доверяют нам своё продвижение</div>
+    </div>
+    <div class="mv rv d1">
+      <div class="mv-label">Лет в медмаркетинге</div>
+      <div class="mv-num slot" data-v="10"><span class="sn">10</span></div>
+      <div class="mv-desc">Глубокая экспертиза в отраслевом законодательстве и медиа</div>
+    </div>
+    <div class="mv rv d2">
+      <div class="mv-label">Охват в месяц</div>
+      <div class="mv-num slot" data-v="47"><span class="sn">47</span><span class="ss">M</span></div>
+      <div class="mv-desc">Суммарный охват аудитории по всем каналам клиентов</div>
+    </div>
+    <div class="mv rv d3">
+      <div class="mv-label">Средний рост</div>
+      <div class="mv-num slot" data-v="3.2" data-f="1"><span class="sn">3.2</span><span class="ss">×</span></div>
+      <div class="mv-desc">Кратный рост записей у клиентов после 6 месяцев работы</div>
+    </div>
+  </div>
+</section>
+
+<!-- CASES -->
+<section class="sec sec-alt" id="cases">
+  <div class="rv"><div class="chip">Кейсы</div></div>
+  <h2 class="sh rv d1 scramble" data-orig="Результаты, говорящие сами">Результаты, говорящие сами<div class="sh-scan"></div></h2>
+  <div class="cg">
+    <div class="cc rv">
+      <div class="ctag">Сеть клиник · Москва · 6 мес</div>
+      <div class="cnum slot" data-v="340"><span class="sn">340</span><span class="ss">%</span></div>
+      <div class="cmet">Рост онлайн-записей</div>
+      <div class="ccli">МедПремиум</div>
+      <div class="cdesc">7 клиник: новый сайт, SEO по 2 400 запросам, репутационная кампания и настройка Директа. Стоимость привлечения −62%.</div>
+    </div>
+    <div class="cc rv d1">
+      <div class="ctag">Врач-эксперт · 14 мес</div>
+      <div class="cnum slot" data-v="890"><span class="sn">890</span><span class="ss">K</span></div>
+      <div class="cmet">Подписчиков с нуля</div>
+      <div class="ccli">Кардиолог А. Воронов</div>
+      <div class="cdesc">Telegram + YouTube, РБК, Первый канал, книга в «Эксмо». Очередь — 4 месяца.</div>
+    </div>
+    <div class="cc rv d2">
+      <div class="ctag">Фарм-бренд · 3 мес</div>
+      <div class="cnum slot" data-v="12"><span class="sn">12</span><span class="ss">M</span></div>
+      <div class="cmet">Охват аудитории</div>
+      <div class="ccli">Vitacomplex</div>
+      <div class="cdesc">DTC + influencer + programmatic. Знание бренда с 12% до 41%, доля рынка +8 п.п.</div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section class="sec" id="about">
+  <div class="rv"><div class="chip">Почему PR-MED</div></div>
+  <h2 class="sh rv d1 scramble" data-orig="Эксперты, знающие медицину изнутри">Эксперты, знающие медицину изнутри<div class="sh-scan"></div></h2>
+  <div class="bento">
+    <div class="bc bc-q rv"><div class="bqm">"</div><p class="bqt">В нашей команде — бывшие главврачи, клинические фармакологи и медицинские журналисты. Мы не переводим медицинский язык на маркетинговый — мы говорим на обоих.</p><div class="bqs">Алина Чернова / CEO & Founder</div></div>
+    <div class="bc bc-m rv d1"><div style="font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--mu);margin-bottom:14px">Лет опыта в команде</div><div class="bmet slot" data-v="10"><span class="sn">10</span></div><div class="bml">средний стаж эксперта</div><div class="bpulse"></div></div>
+    <div class="bc bc-m rv d2"><div style="font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--mu);margin-bottom:14px">Продлевают работу</div><div class="bmet slot" data-v="96"><span class="sn">96</span><span class="ss">%</span></div><div class="bml">довольных клиентов</div></div>
+    <div class="bc rv"><div class="bfi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div><div class="bft">Юрист в штате</div><div class="bfd">Штатный юрист по медицинскому и рекламному праву проверяет каждый материал. Проводит полный аудит сайтов МО на соответствие ФЗ-38, ФЗ-323, требованиям Росздравнадзора.</div></div>
+    <div class="bc rv d1"><div class="bfi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg></div><div class="bft">Медицинский редактор</div><div class="bfd">Практикующий врач проверяет каждый текст на достоверность. Ни один материал не выходит без медицинской верификации — это защита вашей репутации.</div></div>
+    <div class="bc rv d2"><div class="bfi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg></div><div class="bft">Медицинские копирайтеры</div><div class="bfd">Авторы с профильным образованием или многолетним опытом в медицинских СМИ. Пишут на языке E-E-A-T: экспертно, достоверно, убедительно.</div></div>
+    <div class="bc rv d1"><div class="bfi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg></div><div class="bft">Прозрачная аналитика</div><div class="bfd">Еженедельные отчёты: стоимость записи, конверсия, ROI. Вы видите каждый рубль.</div></div>
+    <div class="bc rv d2"><div class="bfi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><div class="bft">Гарантия в договоре</div><div class="bfd">KPI фиксируются при подписании. Не выполнили — работаем за наш счёт.</div></div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="sec sec-alt">
+  <div class="rv"><div class="chip">Как работаем</div></div>
+  <h2 class="sh rv d1 scramble" data-orig="От первого звонка до кратного роста">От первого звонка до кратного роста<div class="sh-scan"></div></h2>
+  <div class="plist" style="margin-top:52px">
+    <div class="ps rv"><div class="pdot">01</div><div><div class="ph">Аудит и стратегия</div><p class="pp">Глубокий анализ конкурентов, аудитории и текущего положения. Персонализированная стратегия с измеримыми KPI под ваши цели и бюджет.</p><span class="pt">1—2 недели</span></div></div>
+    <div class="ps rv d1"><div class="pdot">02</div><div><div class="ph">Запуск и тестирование</div><p class="pp">Запускаем кампании, тестируем гипотезы A/B, настраиваем сквозную аналитику. Быстро реагируем на данные.</p><span class="pt">2—4 недели</span></div></div>
+    <div class="ps rv d2"><div class="pdot">03</div><div><div class="ph">Масштабирование</div><p class="pp">Работающие механики масштабируем, нерабочие отключаем. Оптимизация на основе данных с еженедельными отчётами.</p><span class="pt">с 3-го месяца</span></div></div>
+    <div class="ps rv d3"><div class="pdot">04</div><div><div class="ph">Поддержка и рост</div><p class="pp">Регулярные стратсессии, мониторинг рынка и законодательства, поиск новых точек роста. Остаёмся рядом на всём пути.</p><span class="pt">всегда рядом</span></div></div>
+  </div>
+</section>
+
+<!-- CLIENTS -->
+<div class="cls">
+  <div class="chip" style="display:flex;justify-content:center">Нам доверяют</div>
+  <div class="clr"><div class="cl">МедПремиум</div><div class="cl">СМ-Клиника</div><div class="cl">Vitacomplex</div><div class="cl">АртМед</div><div class="cl">ГрупмедЦентр</div><div class="cl">Фармстандарт</div><div class="cl">DocPlus</div><div class="cl">НоваМед</div></div>
+</div>
+
+<!-- TESTIMONIALS -->
+<section class="sec" id="testimonials">
+  <div class="rv"><div class="chip">Отзывы</div></div>
+  <h2 class="sh rv d1">Говорят наши клиенты</h2>
+  <div class="tg">
+    <div class="tc rv tilt"><div class="tct">За год работы с PR-MED запись через сайт выросла в три раза. Единственные, кто понимает медицину и работает строго по закону. Рекомендую без оговорок.</div><div class="ta"><div class="tav">М</div><div><div class="tan">Марина Соколова</div><div class="tar">Главврач, клиника «Здоровье+»</div></div></div></div>
+    <div class="tc rv d1 tilt"><div class="tct">Был скептиком — думал, нормальный маркетинг в медицине невозможен без нарушений. PR-MED доказали обратное. Очередь — три месяца вперёд.</div><div class="ta"><div class="tav">Д</div><div><div class="tan">Дмитрий Ким</div><div class="tar">Пластический хирург, к.м.н.</div></div></div></div>
+    <div class="tc rv d2 tilt"><div class="tct">Масштабировали сеть с 3 до 9 клиник — PR-MED были рядом на каждом этапе. Комплексный подход, честная аналитика, команда которая болеет за результат.</div><div class="ta"><div class="tav">А</div><div><div class="tan">Андрей Петров</div><div class="tar">CEO, сеть клиник «АртМед»</div></div></div></div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="sec sec-alt" id="team">
+  <div class="rv"><div class="chip">Команда</div></div>
+  <h2 class="sh rv d1">Люди, которые делают результат</h2>
+  <div class="tmg" style="margin-top:52px">
+    <div class="tm rv"><div class="tmp">А</div><div class="tmn">Алина Чернова</div><div class="tmr">CEO & Founder</div><div class="tmb">10 лет в медицинском маркетинге. Экс-директор фармкомпании. Автор курса «Маркетинг в здравоохранении» НИУ ВШЭ.</div></div>
+    <div class="tm rv d1"><div class="tmp">М</div><div class="tmn">Максим Орлов</div><div class="tmr">Creative Director</div><div class="tmb">Специализируется на визуальном языке медицинских брендов. Лауреат Effie и Red Apple.</div></div>
+    <div class="tm rv d2"><div class="tmp">Е</div><div class="tmn">Екатерина Лисицына</div><div class="tmr">Head of PR</div><div class="tmb">Бывший медицинский обозреватель РБК. Связи с редакциями ведущих изданий о здоровье.</div></div>
+    <div class="tm rv d3"><div class="tmp">И</div><div class="tmn">Илья Зайцев</div><div class="tmr">Performance Director</div><div class="tmb">Управляет рекламными бюджетами 50+ млн руб./мес. Эксперт по платному трафику в медицине.</div></div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="sec" id="faq">
+  <div class="rv"><div class="chip">FAQ</div></div>
+  <h2 class="sh rv d1">Ответы на главные вопросы</h2>
+  <div class="fql" style="max-width:880px">
+    <div class="fqi rv"><div class="fqq" onclick="toggleF(this)"><span class="fqt">Работаете ли с небольшими клиниками и частными врачами?</span><span class="fqplus">+</span></div><div class="fqaw"><div class="fqa">Да, работаем с любым масштабом — от частнопрактикующих врачей до федеральных сетей. Минимальный формат — сопровождение одного специалиста от 80 000 руб./мес.</div></div></div>
+    <div class="fqi rv d1"><div class="fqq" onclick="toggleF(this)"><span class="fqt">Как быстро появятся первые результаты?</span><span class="fqplus">+</span></div><div class="fqaw"><div class="fqa">Performance-реклама — через 2—3 недели. SEO и репутационный маркетинг — устойчивый эффект через 3—6 месяцев. Всегда честно озвучиваем реалистичные сроки.</div></div></div>
+    <div class="fqi rv d2"><div class="fqq" onclick="toggleF(this)"><span class="fqt">Как вы соблюдаете медицинское законодательство?</span><span class="fqplus">+</span></div><div class="fqaw"><div class="fqa">В штате — юрист по медицинскому и рекламному праву. Все материалы до публикации проходят правовую экспертизу на соответствие ФЗ-38, ФЗ-323 и требованиям Росздравнадзора. Медицинский редактор — практикующий врач — дополнительно верифицирует фактическую сторону каждого текста.</div></div></div>
+    <div class="fqi rv d1"><div class="fqq" onclick="toggleF(this)"><span class="fqt">Что включает юридический аудит медицинского сайта?</span><span class="fqplus">+</span></div><div class="fqaw"><div class="fqa">Полная проверка сайта МО: наличие и корректность лицензий, дисклеймеры о противопоказаниях, соответствие рекламных материалов ФЗ-38, соблюдение ФЗ-152 в части персональных данных, корректность описания услуг. По итогам — письменное заключение с оценкой рисков и планом устранения нарушений. Рекомендуем провести до любой рекламной активности.</div></div></div>
+    <div class="fqi rv d1"><div class="fqq" onclick="toggleF(this)"><span class="fqt">Предоставляете ли гарантии результата?</span><span class="fqplus">+</span></div><div class="fqaw"><div class="fqa">Да. KPI фиксируются в договоре с финансовой ответственностью. Не выполнили в срок — продолжаем за наш счёт. Это пункт договора, не маркетинговый ход.</div></div></div>
+    <div class="fqi rv d2"><div class="fqq" onclick="toggleF(this)"><span class="fqt">Работаете с фармацевтическими компаниями?</span><span class="fqplus">+</span></div><div class="fqaw"><div class="fqa">Да, фарм-маркетинг — ключевое направление. DTC-коммуникации, HCP-маркетинг, медицинские конгрессы, KOL-программы в различных терапевтических областях.</div></div></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta sec-alt">
+  <div class="chip" style="display:flex;justify-content:center">Начните сегодня</div>
+  <h2 class="rv">Готовы к <span style="color:var(--p)">кратному росту?</span></h2>
+  <p class="rv d1">Напишите нам — ответим в течение 2 часов и предложим время для бесплатной стратсессии.</p>
+  <div class="cta-btns rv d2">
+    <a href="https://t.me/prmed" target="_blank" class="btn-p mag">Написать в Telegram</a>
+    <a href="mailto:hello@pr-med.ru" class="btn-g">hello@pr-med.ru</a>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="sec" id="contact">
+  <div class="rv"><div class="chip">Контакты</div></div>
+  <h2 class="sh rv d1 scramble" data-orig="Напишите нам напрямую">Напишите нам напрямую<div class="sh-scan"></div></h2>
+  <p class="rv d2" style="font-size:15px;color:var(--gray);max-width:520px;line-height:1.85;margin-bottom:0">Выберите удобный канал — отвечаем быстро. Без скриптов, без колл-центра, напрямую с командой.</p>
+  <div class="ch-grid">
+    <a href="https://t.me/prmed" target="_blank" class="ch ch-tg rv">
+      <div class="ch-glow"></div>
+      <div class="ch-label">Основной канал</div>
+      <div class="ch-name">Telegram</div>
+      <div class="ch-handle">@prmed</div>
+      <div class="ch-desc">Отвечаем в течение часа.<br>Голосовые, файлы, скриншоты — всё удобно.</div>
+      <div class="ch-arrow">↗</div>
+    </a>
+    <a href="https://wa.me/74951234567" target="_blank" class="ch ch-wa rv d1">
+      <div class="ch-glow"></div>
+      <div class="ch-label">Для звонков</div>
+      <div class="ch-name">WhatsApp</div>
+      <div class="ch-handle">Написать или позвонить</div>
+      <div class="ch-desc">Удобно для голосовых консультаций.</div>
+      <div class="ch-arrow">↗</div>
+    </a>
+    <a href="https://vk.com/prmed" target="_blank" class="ch ch-vk rv d2">
+      <div class="ch-glow"></div>
+      <div class="ch-label">Сообщество</div>
+      <div class="ch-name">ВКонтакте</div>
+      <div class="ch-handle">vk.com/prmed</div>
+      <div class="ch-desc">Кейсы, новости отрасли и полезный контент.</div>
+      <div class="ch-arrow">↗</div>
+    </a>
+  </div>
+  <div class="ch-email rv d3">Или напишите на <a href="mailto:hello@pr-med.ru">hello@pr-med.ru</a></div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft">
+    <div>
+      <a href="#home" class="flogo">PR<span>-MED</span></a>
+      <p class="fa">Агентство медицинского маркетинга полного цикла. Работаем с клиниками, врачами и фармацевтическими компаниями по всей России с 2016 года.</p>
+      <div class="fso"><a href="https://vk.com/prmed" class="fsb">VK</a><a href="https://t.me/prmed" class="fsb">TG</a><a href="#" class="fsb">YT</a></div>
+    </div>
+    <div class="fc"><h5>Услуги</h5><ul><li><a href="#services">Продвижение клиник</a></li><li><a href="#services">Личный бренд врача</a></li><li><a href="#services">SEO и контент</a></li><li><a href="#services">Управление репутацией</a></li><li><a href="#services">Performance-реклама</a></li><li><a href="#services">PR и медиа</a></li><li><a href="#services">SMM</a></li><li><a href="#services">Фарм-маркетинг</a></li><li><a href="#services">Юридический аудит сайта</a></li></ul></div>
+    <div class="fc"><h5>Компания</h5><ul><li><a href="#about">О нас</a></li><li><a href="#team">Команда</a></li><li><a href="#cases">Кейсы</a></li><li><a href="#testimonials">Отзывы</a></li><li><a href="#">Блог</a></li><li><a href="#">Вакансии</a></li></ul></div>
+    <div class="fc"><h5>Связаться</h5><ul><li><a href="https://t.me/prmed">Telegram</a></li><li><a href="https://wa.me/74951234567">WhatsApp</a></li><li><a href="https://vk.com/prmed">ВКонтакте</a></li><li><a href="mailto:hello@pr-med.ru">hello@pr-med.ru</a></li></ul><div class="fh">Пн—Пт: 09:00—19:00<br>Сб: 10:00—15:00<br>Москва, Пресненская наб., 6с2</div>
+    <div class="flegals">ООО «ПР-МЕД»<br>ИНН 7703XXXXXX · ОГРН 1167703XXXXXX<br>Реклама медицинских услуг подготовлена<br>с соблюдением ФЗ-38 «О рекламе»</div>
+    </div>
+  </div>
+  <div class="fbot"><div class="fcp">© 2016–2026 PR-MED. Все права защищены.</div><div class="fleg"><a href="#" onclick="openPrivacy(event)">Политика конфиденциальности</a><a href="#" onclick="openPrivacy(event)">Обработка персональных данных</a><a href="#" onclick="openPrivacy(event)">Пользовательское соглашение</a></div></div>
+</footer>
+
+<!-- COOKIE BANNER -->
+<div id="cookie-banner" style="display:none">
+  <div class="ck-inner">
+    <div class="ck-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
+    </div>
+    <div class="ck-text">
+      <span class="ck-title">Диагностика данных</span>
+      <span class="ck-body">Используем cookies для анализа трафика и улучшения сервиса согласно <a href="#" onclick="openPrivacy(event)">Политике конфиденциальности</a>. Ваши данные защищены.</span>
+    </div>
+    <div class="ck-actions">
+      <button class="ck-btn-acc" onclick="acceptCookies()">Принять</button>
+      <button class="ck-btn-dec" onclick="declineCookies()">Необходимые</button>
+    </div>
+  </div>
+</div>
+
+<!-- PRIVACY MODAL -->
+<div id="privacy-modal" class="pm-overlay" style="display:none" onclick="closePrivacy(event)">
+  <div class="pm-box">
+    <div class="pm-head">
+      <div class="pm-head-left">
+        <span class="pm-chip">● ДОКУМЕНТ / PR-MED</span>
+        <h3 class="pm-title">Политика конфиденциальности<br>и обработки персональных данных</h3>
+      </div>
+      <button class="pm-close" onclick="closePrivacyBtn()">×</button>
+    </div>
+    <div class="pm-body">
+      <div class="pm-scan"></div>
+      <div class="pm-section">
+        <div class="pm-sec-num">01</div>
+        <div class="pm-sec-content">
+          <h4>Оператор персональных данных</h4>
+          <p>ООО «ПР-МЕД», ИНН 7703XXXXXX, ОГРН 1167703XXXXXX. Адрес: 123112, Москва, Пресненская наб., д. 6, стр. 2. Email: privacy@pr-med.ru</p>
+        </div>
+      </div>
+      <div class="pm-section">
+        <div class="pm-sec-num">02</div>
+        <div class="pm-sec-content">
+          <h4>Какие данные собираются</h4>
+          <p>При обращении через сайт: имя, контактные данные (email, мессенджеры), информация о бизнесе. Технические данные: IP-адрес, cookies, данные браузера — для аналитики и улучшения сервиса.</p>
+        </div>
+      </div>
+      <div class="pm-section">
+        <div class="pm-sec-num">03</div>
+        <div class="pm-sec-content">
+          <h4>Цели обработки</h4>
+          <p>Обработка обращений и запросов · Оказание услуг по заключённым договорам · Улучшение работы сайта · Аналитика и статистика · Направление информационных материалов (с согласия).</p>
+        </div>
+      </div>
+      <div class="pm-section">
+        <div class="pm-sec-num">04</div>
+        <div class="pm-sec-content">
+          <h4>Правовые основания</h4>
+          <p>Обработка осуществляется на основании: согласия субъекта (ст. 6 ФЗ-152), исполнения договора, законного интереса оператора. Согласие может быть отозвано в любой момент.</p>
+        </div>
+      </div>
+      <div class="pm-section">
+        <div class="pm-sec-num">05</div>
+        <div class="pm-sec-content">
+          <h4>Права субъекта данных</h4>
+          <p>Вы вправе: получить информацию об обработке · уточнить или исправить данные · отозвать согласие · потребовать удаления · обратиться в Роскомнадзор. Запросы направляйте на privacy@pr-med.ru.</p>
+        </div>
+      </div>
+      <div class="pm-section">
+        <div class="pm-sec-num">06</div>
+        <div class="pm-sec-content">
+          <h4>Cookies</h4>
+          <p>Используем технические (обязательные), аналитические и маркетинговые cookies. От аналитических и маркетинговых можно отказаться через настройки баннера. Срок хранения — до 2 лет.</p>
+        </div>
+      </div>
+      <div class="pm-footer">
+        <span>ФЗ-152 «О персональных данных» · ФЗ-38 «О рекламе»</span>
+        <span>Версия 1.2 · Обновлено 01.01.2024</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+/* ── COOKIE BANNER ──────────────── */
+#cookie-banner{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:800;width:min(780px,calc(100vw - 32px));animation:ckslide .5s cubic-bezier(.16,1,.3,1) forwards}
+@keyframes ckslide{from{opacity:0;transform:translateX(-50%) translateY(20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+.ck-inner{background:rgba(8,12,20,.96);border:1px solid rgba(0,221,180,.18);backdrop-filter:blur(20px);padding:20px 24px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.ck-icon{color:var(--p);flex-shrink:0;opacity:.8}
+.ck-text{flex:1;min-width:200px;display:flex;flex-direction:column;gap:3px}
+.ck-title{font-family:var(--fh);font-size:13px;font-weight:700;color:var(--w);letter-spacing:.04em}
+.ck-body{font-size:11px;color:var(--gray);line-height:1.6}
+.ck-body a{color:var(--p);text-decoration:none}
+.ck-actions{display:flex;gap:8px;flex-shrink:0}
+.ck-btn-acc{background:var(--p);color:var(--bg);border:none;padding:9px 22px;font-family:var(--fb);font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:opacity .2s}
+.ck-btn-acc:hover{opacity:.85}
+.ck-btn-dec{background:transparent;color:var(--gray);border:1px solid var(--b2);padding:9px 18px;font-family:var(--fb);font-size:10px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.ck-btn-dec:hover{border-color:var(--gray);color:var(--w)}
+
+/* ── PRIVACY MODAL ──────────────── */
+.pm-overlay{position:fixed;inset:0;z-index:900;background:rgba(4,6,8,.88);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:24px}
+.pm-box{background:var(--bg2);border:1px solid rgba(0,221,180,.18);width:min(760px,100%);max-height:90vh;display:flex;flex-direction:column;animation:pmslide .4s cubic-bezier(.16,1,.3,1)}
+@keyframes pmslide{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+.pm-head{padding:32px 40px 28px;border-bottom:1px solid var(--b2);display:flex;justify-content:space-between;align-items:start;gap:20px;flex-shrink:0}
+.pm-chip{font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:var(--p);display:block;margin-bottom:10px}
+.pm-title{font-family:var(--fh);font-size:clamp(18px,2vw,24px);font-weight:800;color:var(--w);line-height:1.2}
+.pm-close{background:none;border:1px solid var(--b2);color:var(--gray);width:36px;height:36px;font-size:20px;cursor:pointer;flex-shrink:0;transition:all .25s;line-height:1;display:flex;align-items:center;justify-content:center}
+.pm-close:hover{border-color:var(--p);color:var(--w)}
+.pm-body{overflow-y:auto;padding:32px 40px 40px;position:relative;flex:1}
+.pm-body::-webkit-scrollbar{width:4px}
+.pm-body::-webkit-scrollbar-track{background:var(--bg)}
+.pm-body::-webkit-scrollbar-thumb{background:var(--b2)}
+.pm-scan{position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--p),transparent);animation:pmscan 3s ease-in-out infinite;opacity:.5}
+@keyframes pmscan{0%{top:0;opacity:.5}50%{opacity:.8}100%{top:100%;opacity:.3}}
+.pm-section{display:flex;gap:24px;padding:22px 0;border-bottom:1px solid var(--b2)}
+.pm-section:last-of-type{border-bottom:none}
+.pm-sec-num{font-family:var(--fn);font-size:28px;color:var(--p);opacity:.35;flex-shrink:0;line-height:1}
+.pm-sec-content h4{font-family:var(--fh);font-size:14px;font-weight:700;color:var(--w);margin-bottom:8px}
+.pm-sec-content p{font-size:13px;color:var(--gray);line-height:1.8}
+.pm-footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:28px;padding-top:20px;border-top:1px solid var(--b2)}
+.pm-footer span{font-size:10px;color:var(--mu);letter-spacing:.08em}
+</style>
+
+<script>
+/* ═══ CURSOR ══════════════════════════════════ */
+const cd=document.getElementById('cd'),cr=document.getElementById('cr');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+(function ac(){rx+=(mx-rx)*.11;ry+=(my-ry)*.11;
+  cd.style.left=mx+'px';cd.style.top=my+'px';
+  cr.style.left=rx+'px';cr.style.top=ry+'px';
+  requestAnimationFrame(ac)})();
+document.querySelectorAll('a,button,.si-head,.fqq').forEach(el=>{
+  el.addEventListener('mouseenter',()=>document.body.classList.add('cursor-big'));
+  el.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-big'));
+});
+
+/* ═══ ECG HERO CANVAS ═════════════════════════ */
+const ecg=document.getElementById('ecg'),ec=ecg.getContext('2d');
+let scan=0,ecgSpeed=1.6,targetSpeed=1.6,curAmp=0,pulseBoost=0;
+const CYCLE=420;
+const PTS=[[0,.5],[.08,.5],[.12,.5],[.15,.43],[.18,.5],[.23,.5],[.26,.53],[.29,.065],[.32,.58],[.36,.5],[.46,.5],[.52,.44],[.58,.38],[.65,.5],[1,.5]];
+function ey(t){const n=((t%1)+1)%1;for(let i=0;i<PTS.length-1;i++){if(n>=PTS[i][0]&&n<=PTS[i+1][0]){const p=(n-PTS[i][0])/(PTS[i+1][0]-PTS[i][0]);return PTS[i][1]+(PTS[i+1][1]-PTS[i][1])*p}}return.5}
+function resECG(){ecg.width=window.innerWidth;ecg.height=window.innerHeight}
+resECG();window.addEventListener('resize',resECG);
+
+// Mouse speed → ECG speed
+let lmx=0,lmy=0;
+document.addEventListener('mousemove',e=>{
+  const spd=Math.hypot(e.clientX-lmx,e.clientY-lmy);
+  targetSpeed=1.6+Math.min(spd*.04,2.5);
+  lmx=e.clientX;lmy=e.clientY;
+  // Cursor Y in hero → amplitude
+  const hero=document.querySelector('.hero');
+  if(hero){const r=hero.getBoundingClientRect();if(e.clientY>=r.top&&e.clientY<=r.bottom){curAmp=(0.5-(e.clientY-r.top)/r.height)*0.18}}
+});
+
+// Hero click = pulse boost
+document.querySelector('.hero').addEventListener('click',e=>{
+  pulseBoost=80;
+  const fl=document.getElementById('hero-flash');
+  fl.style.opacity='1';setTimeout(()=>fl.style.opacity='0',1400);
+});
+
+function drawECG(){
+  const W=ecg.width,H=ecg.height;
+  const cy=H*.54,amp=H*(0.26+Math.abs(curAmp))+(pulseBoost/80)*H*.12;
+  ecgSpeed+=(targetSpeed-ecgSpeed)*.08;
+  if(pulseBoost>0)pulseBoost--;
+
+  // Persistence
+  ec.fillStyle='rgba(4,6,8,.17)';ec.fillRect(0,0,W,H);
+
+  // Grid
+  ec.strokeStyle='rgba(0,221,180,.028)';ec.lineWidth=1;
+  for(let x=0;x<W;x+=44){ec.beginPath();ec.moveTo(x,0);ec.lineTo(x,H);ec.stroke()}
+  for(let y=0;y<H;y+=44){ec.beginPath();ec.moveTo(0,y);ec.lineTo(W,y);ec.stroke()}
+
+  // Wipe ahead
+  const wg=ec.createLinearGradient(scan,0,scan+72,0);
+  wg.addColorStop(0,'#040608');wg.addColorStop(1,'rgba(4,6,8,0)');
+  ec.fillStyle=wg;ec.fillRect(scan,0,72,H);
+
+  // ECG line
+  ec.beginPath();ec.lineWidth=1.5;ec.strokeStyle='#00DDB4';ec.shadowBlur=7;ec.shadowColor='#00DDB4';
+  const seg=Math.ceil(ecgSpeed)+2;
+  for(let i=-seg;i<=1;i++){const px=scan+i;if(px<0||px>W)continue;
+    const t=(px/CYCLE)%1;const y=cy+(ey(t)-.5)*(-amp*2);
+    i===-seg?ec.moveTo(px,y):ec.lineTo(px,y)}
+  ec.stroke();
+
+  // Dot
+  const dt=scan/CYCLE,dy=cy+(ey(dt)-.5)*(-amp*2);
+  ec.beginPath();ec.arc(scan,dy,2,0,Math.PI*2);ec.fillStyle='#fff';ec.shadowBlur=14;ec.shadowColor='#00DDB4';ec.fill();
+  ec.shadowBlur=0;
+  scan+=ecgSpeed;if(scan>W)scan=0;
+  requestAnimationFrame(drawECG);
+}
+drawECG();
+
+/* ═══ FLOATING PIXEL ELEMENTS + CLICK PARTICLES ═══ */
+const pc=document.getElementById('pcanvas'),pctx=pc.getContext('2d');
+function resPc(){pc.width=window.innerWidth;pc.height=window.innerHeight}
+resPc();window.addEventListener('resize',resPc);
+
+const SHAPES={
+  heart:[[0,1,1,0,1,1,0],[1,1,1,1,1,1,1],[1,1,1,1,1,1,1],[0,1,1,1,1,1,0],[0,0,1,1,1,0,0],[0,0,0,1,0,0,0]],
+  cross:[[0,0,1,0,0],[0,0,1,0,0],[1,1,1,1,1],[0,0,1,0,0],[0,0,1,0,0]],
+  pill:[[0,1,1,1,0],[1,1,0,1,1],[1,1,1,1,1],[1,1,0,1,1],[0,1,1,1,0]],
+  plus:[[0,1,0],[1,1,1],[0,1,0]],
+  dna:[[1,0,1],[0,1,0],[1,0,1],[0,1,0],[1,0,1]],
+  drop:[[0,1,0],[1,1,1],[1,1,1],[0,1,0]]
+};
+const SKEYS=Object.keys(SHAPES);
+const COLS=['#00DDB4','#C8924A','#F0ECE4','#00DDB4','#00DDB4'];
+
+function drawShape(ctx,pat,cx,cy,ps,col,alpha){
+  ctx.globalAlpha=alpha;ctx.fillStyle=col;
+  const h=pat.length,w=pat[0].length;
+  const ox=cx-(w*ps)/2,oy=cy-(h*ps)/2;
+  pat.forEach((row,py)=>row.forEach((cell,px)=>{if(cell)ctx.fillRect(ox+px*ps,oy+py*ps,ps-1,ps-1)}));
+  ctx.globalAlpha=1;
+}
+
+class FloatEl{
+  constructor(){
+    this.type=SKEYS[Math.floor(Math.random()*SKEYS.length)];
+    this.x=Math.random()*window.innerWidth;
+    this.y=Math.random()*window.innerHeight;
+    this.bx=this.x;this.by=this.y;
+    this.vx=0;this.vy=0;
+    this.ph=Math.random()*Math.PI*2;
+    this.fr=0.25+Math.random()*.35;
+    this.ba=0.035+Math.random()*.065;
+    this.ps=3+Math.floor(Math.random()*4);
+    this.col=COLS[Math.floor(Math.random()*COLS.length)];
+    this.rot=0;this.rs=(Math.random()-.5)*.4;
+    this.alpha=this.ba;
+  }
+  update(t,mx,my){
+    this.bx+=Math.sin(t*this.fr+this.ph)*.2;
+    this.by+=Math.cos(t*this.fr*.7+this.ph)*.15;
+    const dx=this.x-mx,dy=this.y-my,d=Math.hypot(dx,dy);
+    if(d<160&&d>0){const f=Math.pow((160-d)/160,2)*14;this.vx+=dx/d*f;this.vy+=dy/d*f}
+    this.vx+=(this.bx-this.x)*.022;this.vy+=(this.by-this.y)*.022;
+    this.vx*=.9;this.vy*=.9;
+    this.x+=this.vx;this.y+=this.vy;
+    this.rot+=this.rs;
+    this.alpha=this.ba+Math.max(0,(1-d/200))*.22;
+  }
+  draw(ctx){
+    const pat=SHAPES[this.type];if(!pat)return;
+    ctx.save();ctx.translate(this.x,this.y);ctx.rotate(this.rot*Math.PI/180);
+    if(this.alpha>this.ba+.05){ctx.shadowBlur=10;ctx.shadowColor=this.col}
+    drawShape(ctx,pat,0,0,this.ps,this.col,this.alpha);
+    ctx.shadowBlur=0;ctx.restore();
+  }
+}
+
+class Burst{
+  constructor(x,y){
+    this.x=x;this.y=y;
+    const a=Math.random()*Math.PI*2,s=2+Math.random()*9;
+    this.vx=Math.cos(a)*s;this.vy=Math.sin(a)*s-2;
+    this.life=1;this.sz=2+Math.random()*5;
+    this.col=COLS[Math.floor(Math.random()*COLS.length)];
+  }
+  update(){this.x+=this.vx;this.y+=this.vy;this.vy+=.28;this.vx*=.95;this.life-=.022}
+  draw(ctx){ctx.globalAlpha=Math.max(0,this.life);ctx.fillStyle=this.col;ctx.fillRect(this.x-this.sz/2,this.y-this.sz/2,this.sz,this.sz);ctx.globalAlpha=1}
+}
+
+const floats=Array.from({length:20},()=>new FloatEl());
+const bursts=[];
+let pt=0,pmx=0,pmy=0;
+
+document.addEventListener('mousemove',e=>{pmx=e.clientX;pmy=e.clientY});
+document.addEventListener('click',e=>{for(let i=0;i<18;i++)bursts.push(new Burst(e.clientX,e.clientY))});
+
+(function ploop(){
+  pctx.clearRect(0,0,pc.width,pc.height);
+  pt+=.01;
+  floats.forEach(f=>{f.update(pt,pmx,pmy);f.draw(pctx)});
+  for(let i=bursts.length-1;i>=0;i--){bursts[i].update();bursts[i].draw(pctx);if(bursts[i].life<=0)bursts.splice(i,1)}
+  requestAnimationFrame(ploop)})();
+
+/* ═══ NAV ══════════════════════════════════════ */
+window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('on',scrollY>60));
+
+/* ═══ TEXT SCRAMBLE ════════════════════════════ */
+const SC='АБВГДЗИЙКЛМН0123456789+-∞⊕█▓▒░×÷';
+function scramble(el){
+  if(el.dataset.sc)return;el.dataset.sc='1';
+  const orig=el.dataset.orig||el.textContent;
+  const chars=[...orig];let f=0,tot=22;
+  const iv=setInterval(()=>{
+    f++;const prog=f/tot;
+    el.childNodes[0].textContent=chars.map((c,i)=>{
+      if(c===' '||c==='\n')return c;
+      if(i/chars.length<prog)return c;
+      return SC[Math.floor(Math.random()*SC.length)];
+    }).join('');
+    if(f>=tot){clearInterval(iv);el.childNodes[0].textContent=orig}
+  },45);
+  // Scan line
+  const scan=el.querySelector('.sh-scan');
+  if(scan){scan.classList.remove('go');void scan.offsetWidth;scan.classList.add('go')}
+}
+
+/* ═══ SLOT MACHINE COUNTERS ═══════════════════ */
+function slot(el){
+  if(el.dataset.done)return;el.dataset.done='1';
+  const target=parseFloat(el.dataset.v);
+  const isF=el.dataset.f==='1';
+  const dur=1800;let start=null;
+  // Find the number span (.sn); if no .sn, animate textContent directly (legacy)
+  const numEl=el.querySelector('.sn')||el;
+  (function step(ts){
+    if(!start)start=ts;
+    const p=Math.min((ts-start)/dur,1);
+    const e4=1-Math.pow(1-p,4);
+    const v=e4*target;
+    if(p<.94){
+      const base=isF?v.toFixed(1):Math.floor(v);
+      const s=String(base);
+      const spin=Math.floor(Math.random()*10);
+      // Spin only the last digit; keep leading digits stable
+      numEl.textContent=s.length>1?s.slice(0,-1)+spin:String(spin);
+    }else{
+      numEl.textContent=isF?target.toFixed(1):String(Math.floor(target));
+    }
+    if(p<1)requestAnimationFrame(step);
+    else numEl.textContent=isF?String(target):String(Math.floor(target));
+  })(performance.now());
+}
+
+/* ═══ INTERSECTION OBSERVER ═══════════════════ */
+const io=new IntersectionObserver(e=>e.forEach(en=>{
+  if(!en.isIntersecting)return;
+  en.target.classList.add('in');
+  en.target.querySelectorAll('.slot[data-v]').forEach(slot);
+  if(en.target.classList.contains('slot')&&en.target.dataset.v)slot(en.target);
+  if(en.target.classList.contains('scramble'))scramble(en.target);
+}),{threshold:.12});
+document.querySelectorAll('.rv,.rvc').forEach(el=>io.observe(el));
+document.querySelectorAll('.slot[data-v],.bmet[data-v],.cnum[data-v]').forEach(el=>{
+  const o=new IntersectionObserver(en=>{if(en[0].isIntersecting){slot(en[0].target);o.disconnect()}},{threshold:.3});
+  o.observe(el);
+});
+// Hero stats triggered after animations settle
+setTimeout(()=>{
+  document.querySelectorAll('.sv.slot[data-v]').forEach(el=>{
+    const o=new IntersectionObserver(en=>{if(en[0].isIntersecting){slot(en[0].target);o.disconnect()}},{threshold:.3});
+    o.observe(el);
+  });
+},1600);
+
+/* ═══ ACCORDIONS ══════════════════════════════ */
+function toggleS(h){
+  const item=h.parentElement,body=item.querySelector('.si-body'),inner=item.querySelector('.si-in');
+  const isOpen=item.classList.contains('open');
+  document.querySelectorAll('.si.open').forEach(i=>{i.classList.remove('open');i.querySelector('.si-body').style.height='0'});
+  if(!isOpen){item.classList.add('open');body.style.height=inner.offsetHeight+'px'}
+}
+function toggleF(q){
+  const item=q.parentElement,wrap=item.querySelector('.fqaw'),inner=item.querySelector('.fqa');
+  const isOpen=item.classList.contains('open');
+  document.querySelectorAll('.fqi.open').forEach(i=>{i.classList.remove('open');i.querySelector('.fqaw').style.height='0'});
+  if(!isOpen){item.classList.add('open');wrap.style.height=inner.offsetHeight+'px'}
+}
+
+/* ═══ 3D TILT ══════════════════════════════════ */
+document.querySelectorAll('.tilt').forEach(c=>{
+  c.addEventListener('mousemove',e=>{
+    const r=c.getBoundingClientRect();
+    const x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+    c.style.transform=`perspective(700px) rotateX(${-y*9}deg) rotateY(${x*9}deg) translateY(-4px)`;
+  });
+  c.addEventListener('mouseleave',()=>{
+    c.style.transition='transform .55s cubic-bezier(.23,1,.32,1)';
+    c.style.transform='perspective(700px) rotateX(0) rotateY(0) translateY(0)';
+    setTimeout(()=>c.style.transition='',550);
+  });
+  c.addEventListener('mouseenter',()=>c.style.transition='none');
+});
+
+/* ═══ MAGNETIC BUTTONS ═════════════════════════ */
+document.querySelectorAll('.mag').forEach(b=>{
+  b.addEventListener('mousemove',e=>{
+    const r=b.getBoundingClientRect();
+    const x=(e.clientX-r.left-r.width/2)*.28,y=(e.clientY-r.top-r.height/2)*.28;
+    b.style.transform=`translate(${x}px,${y}px)`;
+  });
+  b.addEventListener('mouseleave',()=>{
+    b.style.transition='transform .5s cubic-bezier(.23,1,.32,1)';
+    b.style.transform='translate(0,0)';
+    setTimeout(()=>b.style.transition='',500);
+  });
+  b.addEventListener('mouseenter',()=>b.style.transition='none');
+});
+
+/* ═══ COOKIE BANNER ════════════════════════════ */
+(function(){
+  if(!localStorage.getItem('ck_consent')){
+    setTimeout(()=>{
+      const b=document.getElementById('cookie-banner');
+      b.style.display='block';
+    },1800);
+  }
+})();
+function acceptCookies(){
+  localStorage.setItem('ck_consent','all');
+  hideCookieBanner();
+}
+function declineCookies(){
+  localStorage.setItem('ck_consent','essential');
+  hideCookieBanner();
+}
+function hideCookieBanner(){
+  const b=document.getElementById('cookie-banner');
+  b.style.transition='opacity .4s,transform .4s';
+  b.style.opacity='0';
+  b.style.transform='translateX(-50%) translateY(16px)';
+  setTimeout(()=>b.style.display='none',400);
+}
+
+/* ═══ PRIVACY MODAL ════════════════════════════ */
+function openPrivacy(e){
+  if(e)e.preventDefault();
+  const m=document.getElementById('privacy-modal');
+  m.style.display='flex';
+  document.body.style.overflow='hidden';
+}
+function closePrivacy(e){
+  if(e&&e.target!==document.getElementById('privacy-modal'))return;
+  closePrivacyBtn();
+}
+function closePrivacyBtn(){
+  const m=document.getElementById('privacy-modal');
+  m.style.transition='opacity .3s';
+  m.style.opacity='0';
+  setTimeout(()=>{m.style.display='none';m.style.opacity='';document.body.style.overflow=''},300);
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closePrivacyBtn()});
+</script>
+</body>
+</html>
