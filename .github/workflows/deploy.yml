@@ -1,0 +1,19 @@
+name: Deploy to Timeweb
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger deploy webhook
+        run: |
+          curl -f -s -X POST https://s-one.ru/deploy-prmed.php \
+            -H "X-Deploy-Secret: ${{ secrets.DEPLOY_SECRET }}" \
+            -H "X-Github-Token: ${{ secrets.GITHUB_TOKEN }}" \
+            --max-time 120
