@@ -3,6 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="PR-MED — агентство медицинского маркетинга полного цикла. Продвигаем клиники, врачей и фармацевтические компании с точностью хирурга.">
+<meta property="og:title" content="PR-MED — Жизненные показатели вашего роста">
+<meta property="og:description" content="Агентство медицинского маркетинга полного цикла. Продвигаем клиники, врачей и фарм-бренды.">
+<meta property="og:type" content="website">
 <title>PR-MED — Жизненные показатели вашего роста</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -146,7 +150,17 @@ nav.on{background:rgba(4,6,8,.93);backdrop-filter:blur(24px);padding:16px 60px;b
 @media(max-width:800px){.mani-top{padding:72px 20px 60px}.mani-values{grid-template-columns:1fr 1fr}.mv{padding:36px 24px}}
 
 /* ── CASES ──────────────────────── */
-.cg{display:grid;grid-template-columns:2fr 1fr 1fr;gap:1px;background:var(--b2)}
+.cg{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--b2)}
+.cc-slider-container{position:relative;margin-bottom:28px}
+.cc-slider-container .cc-img-wrap{margin-bottom:0}
+.cc-btn{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;background:rgba(8,12,20,.7);border:1px solid rgba(255,255,255,.1);border-radius:50%;color:var(--w);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2;transition:background .3s,border-color .3s}
+.cc-btn:hover{background:var(--p);border-color:var(--p);color:var(--bg)}
+.cc-btn.prev{left:12px}
+.cc-btn.next{right:12px}
+.cc-img-wrap{position:relative;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;aspect-ratio:16/9;height:auto;background:var(--bg3);display:flex;align-items:center}
+.cc-img-wrap::-webkit-scrollbar{display:none}
+.cc-img-wrap img{flex:0 0 100%;scroll-snap-align:center;width:100%;height:100%;object-fit:contain;object-position:center;transition:transform .5s cubic-bezier(.16,1,.3,1)}
+.cc:hover .cc-img-wrap img{transform:scale(1.04)}
 .cc{background:var(--bg2);padding:56px 44px;position:relative;overflow:hidden;transition:background .4s}
 .cc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--p);transform:scaleX(0);transform-origin:left;transition:transform .5s cubic-bezier(.16,1,.3,1)}
 .cc:hover{background:var(--bg3)}
@@ -311,6 +325,20 @@ footer{background:var(--bg);padding:68px 60px 32px;border-top:1px solid var(--b2
   .stat{min-width:45%}
   .ft{grid-template-columns:1fr}
 }
+/* ── LIGHTBOX ───────────────────── */
+.lightbox-overlay{position:fixed;inset:0;background:rgba(8,12,20,.95);backdrop-filter:blur(8px);z-index:2000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s ease}
+.lightbox-overlay.active{opacity:1;pointer-events:auto}
+.lightbox-content{position:relative;max-width:90vw;max-height:90vh}
+.lightbox-content img{max-width:100%;max-height:90vh;border-radius:8px;object-fit:contain;box-shadow:0 10px 40px rgba(0,0,0,.5);transform:scale(.95);transition:transform .3s cubic-bezier(.16,1,.3,1)}
+.lightbox-overlay.active .lightbox-content img{transform:scale(1)}
+.lightbox-close{position:absolute;top:-40px;right:-40px;background:transparent;border:none;color:var(--gray);font-size:32px;cursor:pointer;transition:color .3s}
+.lightbox-close:hover{color:var(--w)}
+@media(max-width:800px){.lightbox-close{top:-40px;right:0}}
+.lightbox-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(8,12,20,.7);border:1px solid rgba(255,255,255,.1);color:var(--w);width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .3s,border-color .3s;z-index:2001}
+.lightbox-nav:hover{background:var(--p);border-color:var(--p);color:var(--bg)}
+.lightbox-nav.prev{left:-64px}
+.lightbox-nav.next{right:-64px}
+@media(max-width:800px){.lightbox-nav.prev{left:8px}.lightbox-nav.next{right:8px}}
 </style>
 </head>
 <body>
@@ -348,7 +376,7 @@ footer{background:var(--bg);padding:68px 60px 32px;border-top:1px solid var(--b2
       <span class="line l3"><span class="word">ВЫБИРАЛИ ВАС</span></span>
     </h1>
     <div class="hero-div"></div>
-    <p class="hero-sub">PR-MED — агентство медицинского маркетинга полного цикла. Продвигаем клиники, врачей и фармацевтические компании с точностью хирурга.</p>
+    <p class="hero-sub">PR-MED — агентство медицинского маркетинга полного цикла. Продвигаем клиники, врачей, косметологию и фарм-бренды с точностью хирурга.</p>
     <div class="hero-actions">
       <a href="#contact" class="btn-p mag">Получить стратегию</a>
       <a href="#cases" class="btn-g">Смотреть кейсы</a>
@@ -366,7 +394,7 @@ footer{background:var(--bg);padding:68px 60px 32px;border-top:1px solid var(--b2
 <!-- TICKER -->
 <div class="ticker">
   <div class="ticker-t">
-    <span class="ticker-i">Медицинский маркетинг</span><span class="ticker-i">Продвижение клиник</span><span class="ticker-i">Личный бренд врача</span><span class="ticker-i">SEO для медицины</span><span class="ticker-i">Фарм-маркетинг</span><span class="ticker-i">Управление репутацией</span><span class="ticker-i">PR и медиа</span><span class="ticker-i">Performance-реклама</span><span class="ticker-i">Юридический аудит сайта</span><span class="ticker-i">Медицинский редактор</span><span class="ticker-i">Медицинский маркетинг</span><span class="ticker-i">Продвижение клиник</span><span class="ticker-i">Личный бренд врача</span><span class="ticker-i">SEO для медицины</span><span class="ticker-i">Фарм-маркетинг</span><span class="ticker-i">Управление репутацией</span><span class="ticker-i">PR и медиа</span><span class="ticker-i">Performance-реклама</span><span class="ticker-i">Юридический аудит сайта</span><span class="ticker-i">Медицинский редактор</span>
+    <span class="ticker-i">Медицинский маркетинг</span><span class="ticker-i">Эстетическая медицина</span><span class="ticker-i">Личный бренд врача</span><span class="ticker-i">SEO для медицины</span><span class="ticker-i">Beauty & Health бренды</span><span class="ticker-i">Управление репутацией</span><span class="ticker-i">PR и медиа</span><span class="ticker-i">Performance-реклама</span><span class="ticker-i">Юридический аудит сайта</span><span class="ticker-i">Медицинский маркетинг</span><span class="ticker-i">Эстетическая медицина</span><span class="ticker-i">Личный бренд врача</span><span class="ticker-i">SEO для медицины</span><span class="ticker-i">Beauty & Health бренды</span><span class="ticker-i">Управление репутацией</span><span class="ticker-i">PR и медиа</span><span class="ticker-i">Performance-реклама</span><span class="ticker-i">Юридический аудит сайта</span>
   </div>
 </div>
 
@@ -402,7 +430,7 @@ footer{background:var(--bg);padding:68px 60px 32px;border-top:1px solid var(--b2
     <div class="mv rv">
       <div class="mv-label">Клиентов</div>
       <div class="mv-num slot" data-v="120"><span class="sn">120</span><span class="ss">+</span></div>
-      <div class="mv-desc">Клиник, врачей и фарм-брендов доверяют нам своё продвижение</div>
+      <div class="mv-desc">Клиник, врачей, фарм- и beauty-брендов доверяют нам своё продвижение</div>
     </div>
     <div class="mv rv d1">
       <div class="mv-label">Лет в медмаркетинге</div>
@@ -428,28 +456,66 @@ footer{background:var(--bg);padding:68px 60px 32px;border-top:1px solid var(--b2
   <h2 class="sh rv d1 scramble" data-orig="Результаты, говорящие сами">Результаты, говорящие сами<div class="sh-scan"></div></h2>
   <div class="cg">
     <div class="cc rv">
-      <div class="ctag">Сеть клиник · Москва · 6 мес</div>
-      <div class="cnum slot" data-v="340"><span class="sn">340</span><span class="ss">%</span></div>
-      <div class="cmet">Рост онлайн-записей</div>
-      <div class="ccli">МедПремиум</div>
-      <div class="cdesc">7 клиник: новый сайт, SEO по 2 400 запросам, репутационная кампания и настройка Директа. Стоимость привлечения −62%.</div>
+      <div class="cc-slider-container">
+        <button class="cc-btn prev" onclick="slideLeft(this)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <div class="cc-img-wrap">
+          <img src="screenshots/cardiology1.png" alt="Центр лечения аритмий - экран 1">
+          <img src="screenshots/cardiology2.png" alt="Центр лечения аритмий - экран 2">
+          <img src="screenshots/cardiology3.png" alt="Центр лечения аритмий - экран 3">
+          <img src="screenshots/cardiology4.png" alt="Центр лечения аритмий - экран 4">
+          <img src="screenshots/cardiology5.png" alt="Центр лечения аритмий - экран 5">
+        </div>
+        <button class="cc-btn next" onclick="slideRight(this)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
+      </div>
+      <div class="ctag">Кардиология · Москва</div>
+      <div class="ccli">Центр лечения аритмий профессора Ардашева</div>
+      <div class="cdesc">Новый сайт для центра кардиологии</div>
     </div>
     <div class="cc rv d1">
-      <div class="ctag">Врач-эксперт · 14 мес</div>
-      <div class="cnum slot" data-v="890"><span class="sn">890</span><span class="ss">K</span></div>
-      <div class="cmet">Подписчиков с нуля</div>
-      <div class="ccli">Кардиолог А. Воронов</div>
-      <div class="cdesc">Telegram + YouTube, РБК, Первый канал, книга в «Эксмо». Очередь — 4 месяца.</div>
+      <div class="cc-slider-container">
+        <button class="cc-btn prev" onclick="slideLeft(this)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <div class="cc-img-wrap">
+          <img src="screenshots/familysmile1.png" alt="Family Smile - экран 1">
+          <img src="screenshots/familysmile2.png" alt="Family Smile - экран 2">
+          <img src="screenshots/familysmile3.png" alt="Family Smile - экран 3">
+          <img src="screenshots/familysmile4.png" alt="Family Smile - экран 4">
+          <img src="screenshots/familysmile5.png" alt="Family Smile - экран 5">
+          <img src="screenshots/familysmile6.png" alt="Family Smile - экран 6">
+        </div>
+        <button class="cc-btn next" onclick="slideRight(this)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
+      </div>
+      <div class="ctag">Стоматология · Сочи</div>
+      <div class="ccli">Family Smile</div>
+      <div class="cdesc">Обновление визуальной части сайта для стоматологии, работа с контентом</div>
     </div>
     <div class="cc rv d2">
-      <div class="ctag">Фарм-бренд · 3 мес</div>
-      <div class="cnum slot" data-v="12"><span class="sn">12</span><span class="ss">M</span></div>
-      <div class="cmet">Охват аудитории</div>
-      <div class="ccli">Vitacomplex</div>
-      <div class="cdesc">DTC + influencer + programmatic. Знание бренда с 12% до 41%, доля рынка +8 п.п.</div>
+      <div class="cc-slider-container">
+        <button class="cc-btn prev" onclick="slideLeft(this)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <div class="cc-img-wrap">
+          <img src="screenshots/sochident1.png" alt="3D Стоматология - экран 1">
+          <img src="screenshots/sochident2.png" alt="3D Стоматология - экран 2">
+          <img src="screenshots/sochident3.png" alt="3D Стоматология - экран 3">
+          <img src="screenshots/sochident4.png" alt="3D Стоматология - экран 4">
+        </div>
+        <button class="cc-btn next" onclick="slideRight(this)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
+      </div>
+      <div class="ctag">Стоматология · Сочи</div>
+      <div class="ccli">3D Стоматология</div>
+      <div class="cdesc">Создание сайта и медицинский комплаенс</div>
     </div>
   </div>
 </section>
+
+<script>
+function slideLeft(btn) {
+  const wrap = btn.parentElement.querySelector('.cc-img-wrap');
+  wrap.scrollBy({left: -wrap.clientWidth, behavior: 'smooth'});
+}
+function slideRight(btn) {
+  const wrap = btn.parentElement.querySelector('.cc-img-wrap');
+  wrap.scrollBy({left: wrap.clientWidth, behavior: 'smooth'});
+}
+</script>
 
 <!-- WHY US -->
 <section class="sec" id="about">
@@ -503,7 +569,7 @@ footer{background:var(--bg);padding:68px 60px 32px;border-top:1px solid var(--b2
   <div class="tmg" style="margin-top:52px">
     <div class="tm rv"><div class="tmp">А</div><div class="tmn">Алина Чернова</div><div class="tmr">CEO & Founder</div><div class="tmb">10 лет в медицинском маркетинге. Экс-директор фармкомпании. Автор курса «Маркетинг в здравоохранении» НИУ ВШЭ.</div></div>
     <div class="tm rv d1"><div class="tmp">М</div><div class="tmn">Максим Орлов</div><div class="tmr">Creative Director</div><div class="tmb">Специализируется на визуальном языке медицинских брендов. Лауреат Effie и Red Apple.</div></div>
-    <div class="tm rv d2"><div class="tmp">Е</div><div class="tmn">Екатерина Лисицына</div><div class="tmr">Head of PR</div><div class="tmb">Бывший медицинский обозреватель РБК. Связи с редакциями ведущих изданий о здоровье.</div></div>
+    <div class="tm rv d2"><div class="tmp">К</div><div class="tmn">Кристина Костина</div><div class="tmr">Business Development Director</div><div class="tmb">Отвечает за стратегическое развитие агентства и партнерство с ключевыми клиентами. Гарант соответствия контента стандартам E-E-A-T.</div></div>
     <div class="tm rv d3"><div class="tmp">И</div><div class="tmn">Илья Зайцев</div><div class="tmr">Performance Director</div><div class="tmb">Управляет рекламными бюджетами 50+ млн руб./мес. Эксперт по платному трафику в медицине.</div></div>
   </div>
 </section>
@@ -1022,7 +1088,73 @@ function closePrivacyBtn(){
   m.style.opacity='0';
   setTimeout(()=>{m.style.display='none';m.style.opacity='';document.body.style.overflow=''},300);
 }
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closePrivacyBtn()});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){
+    closePrivacyBtn();
+    closeLightboxBtn();
+  }
+  if(document.getElementById('lightbox').classList.contains('active')){
+    if(e.key==='ArrowLeft') lightboxPrev(null);
+    if(e.key==='ArrowRight') lightboxNext(null);
+  }
+});
+
+/* LIGHTBOX */
+let lbImages=[];
+let lbIndex=0;
+document.querySelectorAll('.cc-img-wrap img').forEach(img=>{
+  img.style.cursor='zoom-in';
+  img.addEventListener('click',e=>{
+    const wrap=e.target.closest('.cc-img-wrap');
+    lbImages=Array.from(wrap.querySelectorAll('img')).map(i=>i.src);
+    lbIndex=lbImages.indexOf(e.target.src);
+    openLightbox();
+  });
+});
+function openLightbox(){
+  const lb=document.getElementById('lightbox');
+  const img=document.getElementById('lightbox-img');
+  img.src=lbImages[lbIndex];
+  lb.classList.add('active');
+  document.body.style.overflow='hidden';
+  
+  const prev=document.querySelector('.lightbox-nav.prev');
+  const next=document.querySelector('.lightbox-nav.next');
+  if(lbImages.length>1){
+    prev.style.display='flex';
+    next.style.display='flex';
+  } else {
+    prev.style.display='none';
+    next.style.display='none';
+  }
+}
+function lightboxPrev(e){
+  if(e)e.stopPropagation();
+  lbIndex=(lbIndex-1+lbImages.length)%lbImages.length;
+  document.getElementById('lightbox-img').src=lbImages[lbIndex];
+}
+function lightboxNext(e){
+  if(e)e.stopPropagation();
+  lbIndex=(lbIndex+1)%lbImages.length;
+  document.getElementById('lightbox-img').src=lbImages[lbIndex];
+}
+function closeLightbox(e){
+  if(e.target.id==='lightbox'||e.target.classList.contains('lightbox-content')) closeLightboxBtn();
+}
+function closeLightboxBtn(){
+  document.getElementById('lightbox').classList.remove('active');
+  document.body.style.overflow='';
+}
 </script>
+
+<!-- LIGHTBOX MODAL -->
+<div id="lightbox" class="lightbox-overlay" onclick="closeLightbox(event)">
+  <div class="lightbox-content">
+    <button class="lightbox-close" onclick="closeLightboxBtn()">×</button>
+    <button class="lightbox-nav prev" onclick="lightboxPrev(event)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+    <img id="lightbox-img" src="" alt="">
+    <button class="lightbox-nav next" onclick="lightboxNext(event)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
+  </div>
+</div>
 </body>
 </html>
