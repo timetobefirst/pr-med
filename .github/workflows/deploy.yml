@@ -3,6 +3,7 @@ name: Deploy to Timeweb
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -16,4 +17,4 @@ jobs:
           curl -f -s -X POST https://prmedagency.ru/deploy-prmed.php \
             -H "X-Deploy-Secret: ${{ secrets.DEPLOY_SECRET }}" \
             -H "X-Github-Token: ${{ secrets.GITHUB_TOKEN }}" \
-            --max-time 120
+            --max-time 30
