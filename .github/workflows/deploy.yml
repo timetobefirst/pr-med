@@ -12,9 +12,19 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger deploy webhook
-        run: |
-          curl -f -s -X POST https://prmedagency.ru/deploy-prmed.php \
-            -H "X-Deploy-Secret: ${{ secrets.DEPLOY_SECRET }}" \
-            -H "X-Github-Token: ${{ secrets.GITHUB_TOKEN }}" \
-            --max-time 30
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./
+          server-dir: /prmedagency.ru/public_html/
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            .github/**
